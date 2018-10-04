@@ -18,7 +18,7 @@ object types {
   // List all values of the type `Either[Unit, Boolean]`.
   //
   val EitherUnitBoolValues: List[Either[Unit, Boolean]] =
-//    List(Left(Unit), Right(true), Right(false))
+//    List(Left((), Right(true), Right(false))
     Left(()) :: BoolValues.map(Right.apply)
 
   //
@@ -27,7 +27,10 @@ object types {
   // List all values of the type `(Boolean, Boolean)`.
   //
   val TupleBoolBoolValues: List[(Boolean, Boolean)] =
-    ???
+    for {
+      first  <- BoolValues
+      second <- BoolValues
+    } yield (first, second)
 
   //
   // EXERCISE 4
