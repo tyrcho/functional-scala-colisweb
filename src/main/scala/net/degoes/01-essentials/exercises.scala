@@ -63,8 +63,8 @@ object types {
   // Prove that `A * 0` is equivalent to `0` by implementing the following two
   // functions.
   //
-  def to2[A](t: (A, Nothing)): Nothing   = ???
-  def from2[A](n: Nothing): (A, Nothing) = ???
+  def to2[A](t: (A, Nothing)): Nothing   = t._2
+  def from2[A](n: Nothing): (A, Nothing) = n
 
   //
   // EXERCISE 8
@@ -72,7 +72,7 @@ object types {
   // Create a sum type of `Int` and `String` representing the identifier of
   // a robot (a number) or a person (a name).
   //
-  type Identifier = ???
+  type Identifier = Either[Int, String]
 
   //
   // EXERCISE 9
