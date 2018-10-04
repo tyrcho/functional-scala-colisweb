@@ -37,7 +37,8 @@ object types {
   //
   // List all values of the type `Either[Either[Unit, Unit], Unit]`.
   //
-  val EitherEitherUnitUnitUnitValues: List[Either[Either[Unit, Unit], Unit]] = ???
+  val EitherEitherUnitUnitUnitValues: List[Either[Either[Unit, Unit], Unit]] =
+    List(Left(Left(())), Left(Right(())), Right(()))
 
   //
   // EXERCISE 5
@@ -45,7 +46,7 @@ object types {
   // Create a product type of `Int` and `String`, representing the age and
   // name of a person.
   //
-  type Person = ???
+  type Person = (Int, String)
 
   //
   // EXERCISE 6
@@ -53,8 +54,8 @@ object types {
   // Prove that `A * 1` is equivalent to `A` by implementing the following two
   // functions.
   //
-  def to1[A](t: (A, Unit)): A   = ???
-  def from1[A](a: A): (A, Unit) = ???
+  def to1[A](t: (A, Unit)): A   = t._1
+  def from1[A](a: A): (A, Unit) = (a, ())
 
   //
   // EXERCISE 7
