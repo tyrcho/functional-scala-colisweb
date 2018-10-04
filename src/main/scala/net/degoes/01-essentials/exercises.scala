@@ -4,6 +4,9 @@ package net.degoes.essentials
 import java.time.LocalDate
 import java.util.Date
 
+import scala.reflect.ClassTag
+import scala.util.Try
+
 object types {
   type ??? = Nothing
 
@@ -108,8 +111,8 @@ object types {
   //
   sealed trait PaymentMethod
   case class CreditCard2(number: String, expirationDate: LocalDate, securityCode: String) extends PaymentMethod
-  case class BankAccount(number: String)                                             extends PaymentMethod
-  case object CryptoCurrency                                                         extends PaymentMethod
+  case class BankAccount(number: String)                                                  extends PaymentMethod
+  case object CryptoCurrency                                                              extends PaymentMethod
   //
   // EXERCISE 12
   //
@@ -160,8 +163,8 @@ object functions {
   //
   // Convert the following non-function into a function.
   //
-  def parseInt1(s: String): Int = s.toInt
-  def parseInt2(s: String): ??? = ???
+  def parseInt1(s: String): Int         = s.toInt
+  def parseInt2(s: String): Option[Int] = Try(s.toInt).toOption
 
   //
   // EXERCISE 2
@@ -170,7 +173,12 @@ object functions {
   //
   def arrayUpdate1[A](arr: Array[A], i: Int, f: A => A): Unit =
     arr.update(i, f(arr(i)))
-  def arrayUpdate2[A](arr: Array[A], i: Int, f: A => A): ??? = ???
+
+  def arrayUpdate2[A: ClassTag](arr: Array[A], i: Int, f: A => A): Array[A] =
+    if (arr.isDefinedAt(i)) {
+      arr.updated(i, f(arr(i)))
+    } else
+      arr
 
   //
   // EXERCISE 3
@@ -178,7 +186,8 @@ object functions {
   // Convert the following non-function into a function.
   //
   def divide1(a: Int, b: Int): Int = a / b
-  def divide2(a: Int, b: Int): ??? = ???
+  def divide2(a: Int, b: Int): Option[Int] =
+    if (b != 0) Some(a / b) else None
 
   //
   // EXERCISE 4
@@ -191,7 +200,7 @@ object functions {
     id += 1
     newId
   }
-  def freshId2( /* ??? */ ): (Int, Int) = ???
+  def freshId2(oldId: Int): (Int, Int) = (oldId, oldId + 1)
 
   //
   // EXERCISE 5
@@ -199,8 +208,8 @@ object functions {
   // Convert the following non-function into a function.
   //
   import java.time.LocalDateTime
-  def afterOneHour1: LocalDateTime              = LocalDateTime.now.plusHours(1)
-  def afterOneHour2( /* ??? */ ): LocalDateTime = ???
+  def afterOneHour1: LocalDateTime                     = LocalDateTime.now.plusHours(1)
+  def afterOneHour2(now: LocalDateTime): LocalDateTime = now.plusHours(1)
 
   //
   // EXERCISE 6
@@ -211,7 +220,9 @@ object functions {
     if (as.length == 0) println("Oh no, it's impossible!!!")
     as.head
   }
-  def head2[A](as: List[A]): ??? = ???
+  def head2[A](as: List[A]): Option[A] =
+    if (as.isEmpty) None
+    else Some(as.head)
 
   //
   // EXERCISE 7
