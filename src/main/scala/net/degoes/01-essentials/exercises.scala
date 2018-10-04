@@ -1,6 +1,8 @@
 // Copyright(C) 2018 - John A. De Goes. All rights reserved.
 
 package net.degoes.essentials
+import java.time.LocalDate
+import java.util.Date
 
 object types {
   type ??? = Nothing
@@ -63,8 +65,8 @@ object types {
   // Prove that `A * 0` is equivalent to `0` by implementing the following two
   // functions.
   //
-  def to2[A](t: (A, Nothing)): Nothing   = t._2
-  def from2[A](n: Nothing): (A, Nothing) = n
+  def to2[A](t: (A, Nothing)): Nothing = ???
+  def from2[A](n: A): (A, Nothing)     = ???
 
   //
   // EXERCISE 8
@@ -80,8 +82,14 @@ object types {
   // Prove that `A + 0` is equivalent to `A` by implementing the following two
   // functions.
   //
-  def to3[A](t: Either[A, Nothing]): A   = ???
-  def from3[A](a: A): Either[A, Nothing] = ???
+  def to3[A](t: Either[A, Nothing]): A =
+    t.left.get
+
+//    t match {
+//    case Left(a) => a
+//  }
+
+  def from3[A](a: A): Either[A, Nothing] = Left(a)
 
   //
   // EXERCISE 10
@@ -89,7 +97,7 @@ object types {
   // Create either a sum type or a product type (as appropriate) to represent a
   // credit card, which has a number, an expiration date, and a security code.
   //
-  type CreditCard = ???
+  case class CreditCard(number: String, expirationDate: Date, securityCode: String)
 
   //
   // EXERCISE 11
@@ -98,15 +106,17 @@ object types {
   // payment method, which could be a credit card, bank account, or
   // cryptocurrency.
   //
-  type PaymentMethod = ???
-
+  sealed trait PaymentMethod
+  case class CreditCard2(number: String, expirationDate: LocalDate, securityCode: String) extends PaymentMethod
+  case class BankAccount(number: String)                                             extends PaymentMethod
+  case object CryptoCurrency                                                         extends PaymentMethod
   //
   // EXERCISE 12
   //
   // Create either a sum type or a product type (as appropriate) to represent an
   // employee at a company, which has a title, salary, name, and employment date.
   //
-  type Employee = ???
+  type Employee = (String, Float, String, Int)
 
   //
   // EXERCISE 13
@@ -115,15 +125,31 @@ object types {
   // piece on a chess board, which could be a pawn, rook, bishop, knight,
   // queen, or king.
   //
-  type ChessPiece = ???
+  sealed trait ChessPieceType
+  case object Pawn   extends ChessPieceType
+  case object Rook   extends ChessPieceType
+  case object Bishop extends ChessPieceType
+  case object Knight extends ChessPieceType
 
+  case class ChessPiece(`type`: ChessPieceType, row: Int, col: Int)
   //
   // EXERCISE 14
   //
   // Create an ADT model of a game world, including a map, a player, non-player
   // characters, different classes of items, and character stats.
   //
-  type GameWorld = ???
+  // Game characteristics:
+  // --------------------
+  //
+  //  - Our game world is composed of realms and paths linking realms.
+  //  - A realm has an identifier, an inventory which is a list of items, and has some characters present in it.
+  //    It could be a plain, a dungeon or a cave.
+  //  - A character an inventory. He could be a player or a non player.
+  //  - A player has a name.
+  //  - A non player can be a ogre, a troll or a wizard.
+  //
+  // TODO: GameWorld
+  case class GameWorld()
 }
 
 object functions {
